@@ -17,3 +17,5 @@ function findAverageBest(arr) {
   const length = arr.length;
   return !length ? 0 : arr.reduce((a, b) => a + b, 0) / length;
 }
+
+console.log([true, true, false].filter((item) => item).length);
