@@ -21,3 +21,4 @@ function disemvowelBest(str) {
     .filter((vowel) => vowels.indexOf(vowel.toLowerCase()) == -1)
     .join("");
 }
+console.log(100 % 150);
