@@ -1,4 +1,4 @@
-// <-- No zeros for heros -->
+// <-- No Zeros For Heros -->
 
 /*
   Numbers ending with zeros are boring.
