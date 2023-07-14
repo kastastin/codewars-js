@@ -1,4 +1,4 @@
-// <-- last digits of a number -->
+// <-- Last digits of a number -->
 
 /*
   Your job is to implement a function which returns the last D digits of an integer N as a list.
