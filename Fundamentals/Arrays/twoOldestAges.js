@@ -21,5 +21,3 @@ function twoOldestAgesBest(ages) {
   ages.sort((a, b) => a - b);
   return ages.slice(ages.length - 2, ages.length);
 }
-
-console.log(twoOldestAgesBest([1, 5, 87, 45, 8, 8]));
