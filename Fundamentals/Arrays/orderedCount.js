@@ -1,4 +1,4 @@
-// <-- TOrdered Count of Characters -->
+// <-- Ordered Count of Characters -->
 
 /*
   Count the number of occurrences of each character and return it as a (list of tuples) in order of appearance. For empty output return (an empty list).
