@@ -26,5 +26,3 @@ function averagesBest(numbers) {
     ? numbers.slice(1).map((val, i) => (val + numbers[i]) / 2)
     : [];
 }
-
-console.log(averagesBest([1, 3, 5, 1, -10]));
