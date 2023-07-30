@@ -22,6 +22,6 @@ function minValue(values) {
 }
 
 // <-- Best Solution -->
-function minValue(values) {
+function minValueBest(values) {
   return Number(Array.from(new Set(values)).sort().join(""));
 }
