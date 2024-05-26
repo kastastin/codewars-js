@@ -107,6 +107,7 @@ function renderCountry(data, className = "") {
   `;
 
 	countriesContainer.insertAdjacentHTML("beforeend", html);
+	countriesContainer.style.opacity = 1;
 }
 
 // <-- Promises -->
@@ -194,7 +195,7 @@ function BuildingSimplePromise() {
 }
 
 // <-- Promisifying Geolocation API -->
-PromisifyingGeolocationAPI();
+// PromisifyingGeolocationAPI();
 
 function PromisifyingGeolocationAPI() {
 	getPosition()
@@ -205,5 +206,27 @@ function PromisifyingGeolocationAPI() {
 		return new Promise(function (resolve, reject) {
 			navigator.geolocation.getCurrentPosition(resolve, reject);
 		});
+	}
+}
+
+// <-- AsyncAwait -->
+AsyncAwait();
+
+function AsyncAwait() {
+	whereAmI("Ukraine");
+
+	async function whereAmI(country) {
+		try {
+			const res = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+
+			if (!res.ok) throw new Error("Country not found");
+
+			const [data] = await res.json();
+			console.log(data);
+			renderCountry(data);
+		} catch (err) {
+			console.error(err);
+			renderError(err.message);
+		}
 	}
 }
