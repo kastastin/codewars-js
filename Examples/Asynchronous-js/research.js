@@ -158,7 +158,7 @@ function Promises() {
 }
 
 // <-- Building Simple Promise -->
-BuildingSimplePromise();
+// BuildingSimplePromise();
 
 function BuildingSimplePromise() {
 	const lotteryPromise = new Promise(function (resolve, reject) {
@@ -191,4 +191,19 @@ function BuildingSimplePromise() {
 			return wait(1);
 		})
 		.then(() => console.log("I waited for 1 second"));
+}
+
+// <-- Promisifying Geolocation API -->
+PromisifyingGeolocationAPI();
+
+function PromisifyingGeolocationAPI() {
+	getPosition()
+		.then((pos) => console.log(pos))
+		.catch((err) => console.error(err));
+
+	function getPosition() {
+		return new Promise(function (resolve, reject) {
+			navigator.geolocation.getCurrentPosition(resolve, reject);
+		});
+	}
 }
