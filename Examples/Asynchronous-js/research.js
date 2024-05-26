@@ -51,7 +51,7 @@ function formatPopulation(population) {
 }
 
 // <-- Callback Hell -->
-CallbackHell();
+// CallbackHell();
 
 function CallbackHell() {
 	getCountryAndNeighbour("usa");
@@ -63,7 +63,6 @@ function CallbackHell() {
 
 		request.addEventListener("load", function () {
 			const [data] = JSON.parse(this.responseText);
-			console.log(data);
 
 			// Render country 1
 			renderCountry(data);
@@ -80,15 +79,15 @@ function CallbackHell() {
 
 			request2.addEventListener("load", function () {
 				const [data2] = JSON.parse(this.responseText);
-				console.log(data2);
 
 				renderCountry(data2, "neighbour");
 			});
 		});
 	}
+}
 
-	function renderCountry(data, className = "") {
-		const html = `
+function renderCountry(data, className = "") {
+	const html = `
     <article class="country ${className}">
       <img class="country__img" src="${data.flags.svg ?? "/img/error.jpg"}" />
       <div class="country__data">
@@ -107,7 +106,53 @@ function CallbackHell() {
     </article>
   `;
 
-		countriesContainer.insertAdjacentHTML("beforeend", html);
-		countriesContainer.style.opacity = 1;
+	countriesContainer.insertAdjacentHTML("beforeend", html);
+}
+
+// <-- Promises -->
+Promises();
+
+function Promises() {
+	btn.addEventListener("click", getCountryData.bind(null, "Ukraine"));
+
+	function getCountryData(countryName) {
+		getJSON(
+			`https://restcountries.com/v3.1/name/${countryName}`,
+			"Country not found"
+		)
+			.then(([data]) => {
+				renderCountry(data);
+
+				const neighbour = data.borders?.[0];
+
+				if (!neighbour) throw new Error("No neighbour found");
+
+				// Fetch neighbour country
+				return getJSON(
+					`https://restcountries.com/v3.1/alpha/${neighbour}`,
+					"Country not found"
+				);
+			})
+			.then(([data]) => renderCountry(data, "neighbour"))
+			.catch((err) => {
+				console.error(`🥳🥳🥳 ${err}`);
+				renderError(`Something went wrong: ${err.message}. Try again!`);
+			})
+			.finally(() => {
+				countriesContainer.style.opacity = 1;
+			});
+	}
+
+	function getJSON(url, errorMessage = "Something went wrong") {
+		return fetch(url).then((response) => {
+			if (!response.ok) throw new Error(`${errorMessage} (${response.status})`);
+
+			return response.json();
+		});
+	}
+
+	function renderError(msg) {
+		countriesContainer.insertAdjacentText("beforeend", msg);
+		countriesContainer.style.textAlign = "center";
 	}
 }
