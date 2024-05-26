@@ -110,7 +110,7 @@ function renderCountry(data, className = "") {
 }
 
 // <-- Promises -->
-Promises();
+// Promises();
 
 function Promises() {
 	btn.addEventListener("click", getCountryData.bind(null, "Ukraine"));
@@ -155,4 +155,40 @@ function Promises() {
 		countriesContainer.insertAdjacentText("beforeend", msg);
 		countriesContainer.style.textAlign = "center";
 	}
+}
+
+// <-- Building Simple Promise -->
+BuildingSimplePromise();
+
+function BuildingSimplePromise() {
+	const lotteryPromise = new Promise(function (resolve, reject) {
+		console.log("Start lottery draw...");
+
+		setTimeout(function () {
+			if (Math.random() < 0.5) {
+				resolve("You win!");
+			} else {
+				reject(new Error("You lost!"));
+			}
+		}, 2000);
+	});
+
+	lotteryPromise
+		.then((res) => console.log(res))
+		.catch((err) => console.error(err))
+		.finally(() => console.log("End lottery draw..."));
+
+	// Promisifying setTimeout
+	function wait(seconds) {
+		return new Promise(function (resolve) {
+			setTimeout(resolve, seconds * 1000);
+		});
+	}
+
+	wait(3)
+		.then(() => {
+			console.log("I waited for 3 seconds");
+			return wait(1);
+		})
+		.then(() => console.log("I waited for 1 second"));
 }
