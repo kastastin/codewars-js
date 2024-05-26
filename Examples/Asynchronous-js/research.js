@@ -144,18 +144,18 @@ function Promises() {
 			});
 	}
 
-	function getJSON(url, errorMessage = "Something went wrong") {
-		return fetch(url).then((response) => {
-			if (!response.ok) throw new Error(`${errorMessage} (${response.status})`);
-
-			return response.json();
-		});
-	}
-
 	function renderError(msg) {
 		countriesContainer.insertAdjacentText("beforeend", msg);
 		countriesContainer.style.textAlign = "center";
 	}
+}
+
+function getJSON(url, errorMessage = "Something went wrong") {
+	return fetch(url).then((response) => {
+		if (!response.ok) throw new Error(`${errorMessage} (${response.status})`);
+
+		return response.json();
+	});
 }
 
 // <-- Building Simple Promise -->
@@ -210,7 +210,7 @@ function PromisifyingGeolocationAPI() {
 }
 
 // <-- AsyncAwait -->
-AsyncAwait();
+// AsyncAwait();
 
 function AsyncAwait() {
 	whereAmI("Ukraine");
@@ -227,6 +227,27 @@ function AsyncAwait() {
 		} catch (err) {
 			console.error(err);
 			renderError(err.message);
+		}
+	}
+}
+
+// <-- Promises in Parallel -->
+PromisesInParallel();
+
+function PromisesInParallel() {
+	get3Countries("Ukraine", "USA", "Germany");
+
+	async function get3Countries(c1, c2, c3) {
+		try {
+			const data = await Promise.all([
+				getJSON(`https://restcountries.com/v3.1/name/${c1}`),
+				getJSON(`https://restcountries.com/v3.1/name/${c2}`),
+				getJSON(`https://restcountries.com/v3.1/name/${c3}`),
+			]);
+
+			console.log(data.map((d) => d[0].capital[0]));
+		} catch (err) {
+			console.error(err);
 		}
 	}
 }
