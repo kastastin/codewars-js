@@ -251,3 +251,22 @@ function PromisesInParallel() {
 		}
 	}
 }
+
+// <-- Static Promise Methods -->
+async function raceExample() {
+	const res = await Promise.race([
+		getJSON(`https://restcountries.com/v3.1/name/usa`),
+		getJSON(`https://restcountries.com/v3.1/name/germany`),
+		getJSON(`https://restcountries.com/v3.1/name/ukraine`),
+	]);
+
+	console.log(res[0]); // any first promise (resolve or reject)
+}
+
+function allSettledExample() {
+	Promise.allSettled([
+		Promise.resolve("Success"),
+		Promise.reject("Error"),
+		Promise.resolve("Success"),
+	]).then((res) => console.log(res));
+}
