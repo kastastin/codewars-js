@@ -13,6 +13,8 @@
   Note: the original array must not be changed in any case!
 */
 
+console.log(1)
+
 // <-- My Solution -->
 Array.prototype.square = function () {
 	return this.map(function (n) {
