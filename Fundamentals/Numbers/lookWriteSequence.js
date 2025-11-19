@@ -1,52 +1,36 @@
 // <-- Look and Write Sequence -->
 
 /*
-  You are tasked with a variant of the "look-and-write" sequence. The sequence is built iteratively according to the following rules. Start with the sequence "11". After looking at the current sequence, for each digit 0–9, check how many times it appears. For every digit that occurs at least once, append its count followed by the digit to the end of the sequence. The new sequence is formed by adding all these pairs in order to the current sequence.
+  You wrote all your unit test names in camelCase. But some of your colleagues have troubles reading these long test names. So you make a compromise to switch to underscore separation.
 
-  Your task is to compute the length of the sequence after n looks on the sequence.
+  To make these changes fast you wrote a class to translate a camelCase name into an underscore separated name.
+  Implement the ToUnderscore() method.
 
-  Input: n, the number of times you look at the sequence (0 ≤ n ≤ 7*10^5) for Javascript, for Python: (0 ≤ n ≤ 2*10^5)
-
-  Output: An integer representing the length of the sequence after n looks
-
-  Examples:
-  n = 1
-  Start with "11". Then, for the first look, it’s "11" + there are two 1s, so "21". Concatenating gives "1121", and the length is 4.
-
-  n = 3
-  Start with "11". Then, for the first look, it’s "11" + there are two 1s, so "21". Concatenating gives "1121". For the second look, there are three 1s and one 2, so concatenate "1121" + "31" + "12" → "11213112". For the last look, in "11213112" there are five 1s, two 2s, and one 3, so concatenate "11213112" + "51" + "22" + "13" → "11213112512213". The length is 14.
+  Example:
+  "ThisIsAUnitTest" => "This_Is_A_Unit_Test"
 */
 
 // <-- My Solution -->
-function lookAndWrite(n) {
-  let obj = {};
-  let string = "11";
-  let last = "11";
+function toUnderScore(name) {
+  const result = [...name];
 
-  for (let i = 0; i < n; i++) {
-    let arr = [];
-    last.split("").forEach((m) => (obj[m] = (obj[m] || 0) + 1));
+  for (let i = 1; i < name.length; i++) {
+    const prev = name[i - 1];
+    const curr = name[i];
 
-    for (let [key, value] of Object.entries(obj)) {
-      arr.push(value + key);
+    switch (true) {
+      case /[a-z]/.test(prev) && /[A-Z0-9]/.test(curr):
+      case /[A-Z][A-Z]/.test(prev + curr):
+      case /[0-9][A-Z]/.test(prev + curr):
+      case /[A-Z][0-9]/.test(prev + curr):
+        result[i] = `_${result[i]}`;
     }
-
-    last = arr.join("");
-    string += last;
   }
 
-  return string.length;
+  return result.join("");
 }
 
 // <-- Best Solution -->
-const lookAndWriteBest = (n) => {
-  const a = [0, 2, 0, 0, 0, 0, 0, 0, 0, 0];
-
-  const f = (c) => c && f((c / 10) | 0, a[c % 10]++);
-
-  while (n--) {
-    a.map((e) => e).map((c, d) => c && f(c, a[d]++));
-  }
-
-  return a.reduce((a, b) => a + b);
-};
+function toUnderScoreBest(s) {
+  return s.replace(/([A-Za-z](?=[A-Z\d])|\d(?=[A-Z]))/g, "$&_");
+}
